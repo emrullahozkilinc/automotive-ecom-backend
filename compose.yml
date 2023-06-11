@@ -1,0 +1,39 @@
+services:
+  postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+    ports:
+      - "5430:5432"
+  keycloak:
+    image: quay.io/keycloak/keycloak:legacy
+    depends_on:
+      - keycloak-postgres
+    environment:
+      DB_VENDOR: POSTGRES
+      DB_ADDR: keycloak-postgres
+      DB_SCHEMA: public
+      DB_DATABASE: keycloak
+      DB_USER: keycloakuser
+      DB_PASSWORD: keycloaksecret
+      KEYCLOAK_USER: admin
+      KEYCLOAK_PASSWORD: secret
+    ports:
+      - "8091:8080"
+
+  keycloak-postgres:
+    image: postgres:latest
+    restart: always
+    environment:
+      POSTGRES_DB: keycloak
+      POSTGRES_USER: keycloakuser
+      POSTGRES_PASSWORD: keycloaksecret
+    volumes:
+      - keycloak-postgres-data:/var/lib/postgresql/data
+
+volumes:
+  keycloak-postgres-data:
+    driver: local
+

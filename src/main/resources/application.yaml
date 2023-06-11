@@ -1,0 +1,21 @@
+spring:
+  jpa:
+    open-in-view: false
+    show-sql: true
+  datasource:
+    url: jdbc:postgresql://localhost:5430/postgres
+    username: postgres
+    password: secret
+    platform: postgres
+    driverClassName: org.postgresql.Driver
+  security:
+    oauth2:
+      resource-server:
+        jwt:
+          issuer-uri: http://localhost:8091/auth/realms/automotive-ecom
+          jwk-set-uri: http://localhost:8091/auth/realms/automotive-ecom/protocol/openid-connect/certs
+
+
+springdoc:
+  api-docs:
+    path: /api-docs
