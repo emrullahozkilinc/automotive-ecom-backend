@@ -1,35 +1,43 @@
 package com.fmss.automotiveecombackend.data.dbmodel;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.id.uuid.UuidGenerator;
 
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-@Setter
 @Getter
+@Setter
 @Entity
-@NoArgsConstructor
 @AllArgsConstructor
-public class Customer {
+@NoArgsConstructor
+public class Address {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private UUID id;
 
-    private String name;
+    private String city;
 
-    private String phone;
+    private String country;
 
-    private String email;
+    private String zipCode;
+
+    private String streetNumber;
+
+    private String doorNumber;
+
+    @OneToOne
+    @JsonBackReference
+    private Order order;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

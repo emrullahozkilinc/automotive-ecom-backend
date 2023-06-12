@@ -20,7 +20,10 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .csrf(AbstractHttpConfigurer::disable)
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
+
+                .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/api-docs/**", "/swagger-ui.html", "/swagger-ui/*", "/automotiveecombackend/swagger-ui.html", "/automotive-ecom-backend/swagger-ui.html").permitAll()
+                        .anyRequest().authenticated())
                 .sessionManagement(man -> man.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
 
         http
