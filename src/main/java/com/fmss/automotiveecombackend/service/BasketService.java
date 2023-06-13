@@ -2,15 +2,14 @@ package com.fmss.automotiveecombackend.service;
 
 import com.fmss.automotiveecombackend.data.dbmodel.Basket;
 import com.fmss.automotiveecombackend.data.dbmodel.Product;
-import com.fmss.automotiveecombackend.data.dbmodel.User;
+import com.fmss.automotiveecombackend.data.dto.request.AddItemToBasketPayload;
+import com.fmss.automotiveecombackend.data.dto.request.RemoveItemsFromBasket;
 import com.fmss.automotiveecombackend.data.repository.BasketRepository;
-import com.fmss.automotiveecombackend.exception.exception_classes.BasketNotFoundException;
 import com.fmss.automotiveecombackend.mapper.ProductMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -21,31 +20,29 @@ public class BasketService {
     private final BasketRepository basketRepository;
     private final ProductService productService;
     private final ProductMapper productMapper;
+    private final UserService userService;
 
-    public void createBasketForUser(User user) {
-        basketRepository.save(Basket.builder().user(user).products(new ArrayList<>()).build());
-    }
+    public void addProductToBasket(UUID userKeycloakId, AddItemToBasketPayload payload) {
+        Basket basket = userService.getUserByKeycloakId(userKeycloakId).getBasket();
 
-    public void addProductToBasket(String basketId, List<String> productIds) {
-        Basket basket = basketRepository.findById(UUID.fromString(basketId))
-                .orElseThrow(() -> new BasketNotFoundException("Basket not found with id: " + basketId));
-
-        List<Product> products = productService.filterProducts(productIds).stream().map(productMapper::toProduct).toList();
-
+        List<Product> products = productService.filterProducts(payload.getProductIds()).stream().map(productMapper::toProduct).toList();
         productService.reduceProductFromStock(products);
 
-        basket.getProducts().addAll(products);
+        if (basket.getProducts() == null) {
+            basket.setProducts(products);
+        } else {
+            basket.getProducts().addAll(products);
+        }
+
         basketRepository.save(basket);
     }
 
-    public void removeProductFromBasket(String basketId, List<String> productIds) {
-        Basket basket = basketRepository.findById(UUID.fromString(basketId))
-                .orElseThrow(() -> new BasketNotFoundException("Basket not found with id: " + basketId));
+    //TODO: Userin stokundan ürün düşmese bile stoktan düşüyor
+    public void removeProductFromBasket(UUID userKeycloakId, RemoveItemsFromBasket payload) {
+        Basket basket = userService.getUserByKeycloakId(userKeycloakId).getBasket();
 
-        List<Product> products = productService.filterProducts(productIds).stream().map(productMapper::toProduct).toList();
-
+        List<Product> products = productService.filterProducts(payload.getProductIds()).stream().map(productMapper::toProduct).toList();
         productService.increaseStock(products);
-
         basket.getProducts().removeAll(products);
         basketRepository.save(basket);
     }

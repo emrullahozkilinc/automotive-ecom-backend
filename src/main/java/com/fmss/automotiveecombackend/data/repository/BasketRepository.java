@@ -8,6 +8,7 @@ import java.util.UUID;
 
 public interface BasketRepository extends JpaRepository<Basket, UUID> {
 
+    Optional<Basket> findByUserId(UUID userId);
 
 //    Optional<Basket> getBasketWithId();
 }

@@ -31,8 +31,8 @@ public class ProductService {
                 .orElseThrow(() -> new ProductNotFoundException("Product not found with id: " + id));
     }
 
-    public List<ProductResponse> filterProducts(List<String> productIds) {
-        return productRepository.findByIdIn(productIds.stream().map(UUID::fromString).toList()).stream().map(productMapper::toProductResponse).collect(Collectors.toList());
+    public List<ProductResponse> filterProducts(List<UUID> productIds) {
+        return productRepository.findByIdIn(productIds.stream().toList()).stream().map(productMapper::toProductResponse).collect(Collectors.toList());
     }
 
     public List<ProductResponse> getProducts() {

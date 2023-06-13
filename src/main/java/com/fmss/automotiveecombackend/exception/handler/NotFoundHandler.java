@@ -1,6 +1,7 @@
 package com.fmss.automotiveecombackend.exception.handler;
 
 import com.fmss.automotiveecombackend.data.dto.response.NotFoundResponsePayload;
+import com.fmss.automotiveecombackend.exception.exception_classes.ClientBadRequestException;
 import com.fmss.automotiveecombackend.exception.exception_classes.NotFoundException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -15,6 +16,14 @@ public class NotFoundHandler {
     public NotFoundResponsePayload handleNotFound(NotFoundException notFoundException) {
         return NotFoundResponsePayload.builder()
                 .message(notFoundException.getMessage())
+                .build();
+    }
+
+    @ExceptionHandler(ClientBadRequestException.class)
+    @ResponseStatus(HttpStatus.BAD_REQUEST)
+    public NotFoundResponsePayload handleBadRequest(ClientBadRequestException exception) {
+        return NotFoundResponsePayload.builder()
+                .message(exception.getMessage())
                 .build();
     }
 }
