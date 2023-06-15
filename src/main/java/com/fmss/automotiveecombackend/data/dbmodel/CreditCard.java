@@ -1,13 +1,15 @@
 package com.fmss.automotiveecombackend.data.dbmodel;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.ManyToOne;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Getter
@@ -16,20 +18,19 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class Basket {
-
-    //TODO: sepete her üründen sadece birer tane eklenebiliyor. birden fazla ürün eklenebilir hale geitilecek.
-    //TODO: bu sırada product içerisindeki quantity de kontrol edilecek ve ona göre düşülecek
-
+public class CreditCard {
 
     @Id
     @GeneratedValue
     private UUID id;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Product> products;
+    private String cardNumber;
 
-    @OneToOne
+    private String cardDate;
+
+    private String cvc;
+
+    @ManyToOne
     @JsonBackReference
     private User user;
 

@@ -6,6 +6,7 @@ import com.fmss.automotiveecombackend.data.dto.request.AddItemToBasketPayload;
 import com.fmss.automotiveecombackend.data.dto.request.RemoveItemsFromBasket;
 import com.fmss.automotiveecombackend.data.repository.BasketRepository;
 import com.fmss.automotiveecombackend.mapper.ProductMapper;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -22,6 +23,7 @@ public class BasketService {
     private final ProductMapper productMapper;
     private final UserService userService;
 
+    @Transactional
     public void addProductToBasket(UUID userKeycloakId, AddItemToBasketPayload payload) {
         Basket basket = userService.getUserByKeycloakId(userKeycloakId).getBasket();
 

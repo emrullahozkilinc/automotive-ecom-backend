@@ -19,8 +19,25 @@ spring:
         jwt:
           issuer-uri: http://localhost:8091/auth/realms/automotive-ecom
           jwk-set-uri: http://localhost:8091/auth/realms/automotive-ecom/protocol/openid-connect/certs
+  mail:
+    host: smtp-mail.outlook.com
+    username: javademo131@outlook.com
+    password: Javax123
+    port: 587
+    properties:
+      protocol: smtp
+      mail:
+        smtp:
+          auth: true
+          starttls:
+            enable: true
+
+mail:
+  outlook:
+    sender: javademo131@outlook.com
 
 
+# SWAGGER
 springdoc:
   api-docs:
     path: /api-docs

@@ -1,9 +1,7 @@
 package com.fmss.automotiveecombackend.service;
 
-import com.fmss.automotiveecombackend.data.dbmodel.Basket;
 import com.fmss.automotiveecombackend.data.dbmodel.User;
 import com.fmss.automotiveecombackend.data.dto.request.CreateUserPayload;
-import com.fmss.automotiveecombackend.data.repository.BasketRepository;
 import com.fmss.automotiveecombackend.data.repository.UserRepository;
 import com.fmss.automotiveecombackend.exception.exception_classes.ClientBadRequestException;
 import com.fmss.automotiveecombackend.mapper.UserMapper;
@@ -20,7 +18,6 @@ import static com.fmss.automotiveecombackend.constants.ExceptionMessageConstants
 public class UserService {
 
     private final UserRepository userRepository;
-    private final BasketRepository basketRepository;
     private final UserMapper userMapper;
 
     //TODO: Userlar redisten gelecek
@@ -34,7 +31,6 @@ public class UserService {
 
         User user = userMapper.toEntity(payload);
         userRepository.save(user);
-        createBasketForUser(user);
 
         return user.getId();
     }
@@ -44,7 +40,4 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 
-    private void createBasketForUser(User user) {
-        basketRepository.save(Basket.builder().user(user).build());
-    }
 }
