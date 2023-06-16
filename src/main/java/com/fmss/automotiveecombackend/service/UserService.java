@@ -40,4 +40,9 @@ public class UserService {
                 .orElseThrow(() -> new UsernameNotFoundException("User not found!"));
     }
 
+    public void clearUserBasket(User user) {
+        user.setBasket(null);
+        userRepository.save(user);
+    }
+
 }

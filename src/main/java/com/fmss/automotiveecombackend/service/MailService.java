@@ -32,7 +32,7 @@ public class MailService {
     private String prepareMailHtml(String body) {
         return "<html>" +
                 "<body>" +
-                "<h3> Ticket Info </h3>" +
+                "<h3> Order Info </h3>" +
                 "<p>" + body + "</p>"+
                 "</body>" +
                 "</html>";

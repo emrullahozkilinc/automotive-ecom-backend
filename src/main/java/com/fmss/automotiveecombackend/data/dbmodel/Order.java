@@ -3,8 +3,6 @@ package com.fmss.automotiveecombackend.data.dbmodel;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
-import org.hibernate.id.uuid.UuidGenerator;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -31,7 +29,7 @@ public class Order {
     @OneToOne
     private User user;
 
-    @OneToOne(mappedBy = "order")
+    @OneToOne(mappedBy = "order", cascade = CascadeType.ALL)
     @JsonManagedReference
     private Address address;
 }
